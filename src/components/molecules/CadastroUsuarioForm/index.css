@@ -1,0 +1,241 @@
+.containerCadastroUsuario {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ width: 100vw;
+ background-color: #e5e5e5;
+}
+
+.logoCadastroUsuario {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.cadastroFormUsuario .logoCadastroUsuario img {
+ width: 150px;
+ height: 150px;
+}
+
+.containerCadastroUsuario .cadastroFormUsuario {
+ display: flex;
+ justify-content: center;
+ flex-direction: column;
+ align-items: center;
+}
+
+.cadastroFormUsuario form {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ height: 700px;
+ width: 700px;
+ gap: 30px;
+ background-color: white;
+ border-radius: 15px;
+}
+
+.cadastroFormUsuario img {
+ width: 100px;
+ height: 100px;
+ margin-top: 30px;
+}
+
+.gridNomeUsuario {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ gap: 30px 30px;
+ width: 42rem;
+}
+
+.gridNomeUsuario div {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 2rem;
+}
+
+.gridNomeUsuario input {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 0;
+}
+
+.dadosComplementares {
+ display: grid;
+ justify-content: center;
+ align-items: center;
+ grid-template-columns: 1fr 1fr;
+ grid-template-rows: 1fr 1fr;
+ gap: 30px 30px;
+ width: 42rem;
+}
+
+.dadosComplementares div {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 2rem;
+}
+
+.dadosComplementares input {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 0;
+}
+
+.dadosEndereco {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ justify-content: center;
+ align-items: center;
+ gap: 30px 30px;
+ width: 10rem;
+ height: 2rem;
+}
+
+.dadosEndereco div {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 20rem;
+ height: 2rem;
+}
+
+.dadosEndereco input {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ width: 30rem;
+ height: 2rem;
+}
+
+.containerButtonCadastroUsuario {
+ display: flex;
+ height: 100px;
+ flex-direction: column;
+ margin-top: 30px;
+ gap: 20px;
+}
+
+.containerButtonCadastroUsuario a {
+ text-decoration: none;
+}
+
+.containerButtonCadastroUsuario button {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+}
+
+.containerButtonCadastroUsuario .buttonVoltar {
+ background-color: white;
+ color: #1976d2;
+ font-weight: bold;
+}
+
+.containerButtonCadastroUsuario .buttonCadastrar:hover {
+ background-color: white;
+ color: #1976d2;
+ font-weight: bold;
+}
+
+.containerButtonCadastroUsuario .buttonVoltar:hover {
+ background-color: #1976d2;
+ color: white;
+ font-weight: bold;
+}
+
+@media (min-width: 200px) and (max-width: 640px) {
+ .cadastroFormUsuario form {
+  width: 17rem;
+  height: 100%;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 80px;
+ }
+
+ .containerCadastroUsuario .gridNomeUsuario {
+  width: 15rem;
+ }
+
+ .containerCadastroUsuario .dadosComplementares {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+ }
+
+ .containerCadastroUsuario .dadosEndereco {
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  height: 100%;
+ }
+
+ .containerCadastroUsuario .dadosEndereco div {
+  width: 100%;
+ }
+
+ .containerButtonCadastroUsuario {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 30px;
+ }
+}
+
+@media (max-width: 1024px) {
+ .cadastroFormUsuario {
+  width: 40rem;
+  height: 100%;
+ }
+
+ .cadastroFormUsuario form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  background-color: white;
+  border-radius: 15px;
+ }
+
+ .gridNomeUsuario div {
+  width: 100%;
+ }
+
+ .dadosEndereco {
+  width: 100%;
+  height: 100%;
+  gap: 30px 30px;
+ }
+
+ .dadosEndereco div {
+  width: 100%;
+ }
+
+ .containerButtonCadastroUsuario {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+ }
+
+ .containerButtonCadastroUsuario button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+ }
+}

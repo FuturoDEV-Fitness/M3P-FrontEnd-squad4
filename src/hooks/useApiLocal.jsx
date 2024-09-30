@@ -7,10 +7,15 @@ export const useApiLocal = () => {
     const [totalLocais, setTotalLocais] = useState(0);
     const token = localStorage.getItem("authToken");
 
-    useEffect(() => {
-        getLocais();
-    }, []);
 
+    useEffect(() => {
+        if (token) {
+            getLocais();
+        } else {
+            setError("Token não encontrado");
+            setLoading(false);
+        }
+    }, [token]);
     const getLocais = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_URL_API}/locais`, {

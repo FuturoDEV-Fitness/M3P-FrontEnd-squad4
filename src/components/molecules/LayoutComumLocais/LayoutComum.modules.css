@@ -1,0 +1,92 @@
+/* LayoutComum.module.css */
+
+.containerPrincipalLayoutComum {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 0 10px;
+    gap: 20px;
+}
+
+.titulo {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.authButtons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .containerPrincipalLayoutComum {
+        padding: 10px;
+    }
+
+    .info {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .titulo {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        grid-template-columns: 1fr;
+    }
+
+    .authButtons {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .containerPrincipalLayoutComum {
+        max-width: 1600px;
+        margin-top: 20px;
+    }
+
+    .titulo {
+        font-size: 3rem;
+        margin-top: 0;
+    }
+
+    .card {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}

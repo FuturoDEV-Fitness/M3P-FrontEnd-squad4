@@ -22,6 +22,7 @@ function ExerciseOpenAirHeader() {
     const handleLogout = () => {
         logout(localStorage.getItem("usuarioLogado"));
         localStorage.removeItem("usuarioLogado");
+        localStorage.removeItem("authToken");
 
         navigate("/");
         setAnchorEl(null);

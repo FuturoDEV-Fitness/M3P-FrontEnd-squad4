@@ -8,8 +8,9 @@ import ErroPage from "../pages/ErroPage/ErroPage";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
 import CadastroLocalPage from "../pages/CadastroLocalPage/CadastroLocalPage";
 import ListaLocalPage from "../pages/ListaLocalPage/ListaLocalPage";
+import { getCookie} from "../hooks/useCookies";
 
-const isAuthenticated = localStorage.getItem("usuarioLogado") !== null;
+const isAuthenticated = getCookie("usuarioLogado") !== null;
 
 const PrivateRoute = ({ children }) => {
  return isAuthenticated ? children : <LoginPage />;

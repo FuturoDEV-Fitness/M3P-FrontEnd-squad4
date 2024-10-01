@@ -1,10 +1,10 @@
-/* eslint-disable */
 import { Button, Menu, MenuItem } from "@mui/material";
 import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useApiUsuario } from "../../../hooks/useApiUsuario";
+import { getCookie } from "../../../hooks/useCookies";
 
 function ExerciseOpenAirHeader() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -20,11 +20,7 @@ function ExerciseOpenAirHeader() {
     };
 
     const handleLogout = () => {
-        logout(localStorage.getItem("usuarioLogado"));
-        localStorage.removeItem("usuarioLogado");
-        localStorage.removeItem("authToken");
-
-        navigate("/");
+        logout(getCookie("usuarioLogado"));
         setAnchorEl(null);
     };
 
@@ -58,7 +54,7 @@ function ExerciseOpenAirHeader() {
                             keepMounted
                             open={Boolean(anchorEl)}
                             onClose={handleClose}>
-                            <MenuItem disabled>{localStorage.getItem("usuarioLogado")}</MenuItem>
+                            <MenuItem disabled>{getCookie("usuarioLogado")}</MenuItem>
                             <MenuItem onClick={handleLogout}>Sair</MenuItem>
                         </Menu>
                     </li>

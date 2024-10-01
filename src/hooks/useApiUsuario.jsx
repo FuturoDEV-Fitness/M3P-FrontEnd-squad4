@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { setCookie, eraseCookie, getCookie } from "./useCookies.js";
+import { isTokenValid } from "./useValidaToken.js";
 
 export const useApiUsuario = () => {
     const [usuarios, setUsuarios] = useState([]);
@@ -6,9 +8,13 @@ export const useApiUsuario = () => {
     const [error, setError] = useState(null);
     const [totalOnline, setTotalOnline] = useState(0);
 
-
     useEffect(() => {
-        getUsuarios();
+        const token = getCookie("authToken");
+        if (token && isTokenValid(token)) {
+            getUsuarios();
+        } else {
+            logout();
+        }
     }, []);
 
     const getUsuarios = async () => {
@@ -54,8 +60,9 @@ export const useApiUsuario = () => {
             const data = await response.json();
             const token = data.Authorization;
 
-            localStorage.setItem("authToken", token);
-            localStorage.setItem("usuarioLogado", dadosUsuario.email);
+            // Armazenando em cookies
+            setCookie("authToken", token, 7); // Cookie expira em 7 dias
+            setCookie("usuarioLogado", dadosUsuario.email, 7);
 
             setTotalOnline(totalOnline + 1);
             console.log("Total online:", totalOnline);
@@ -133,26 +140,40 @@ export const useApiUsuario = () => {
 
     const logout = async (emailUsuarioLogado) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.mensagem);
-                return;
-            }
-
-            const dados = await response.json();
-
-            dados.forEach((usuario) => {
-                if (usuario.email === emailUsuarioLogado) {
-                    atualizarStatusUsuario(usuario, usuario.id, false);
-                    setTotalOnline((totalOnline) => totalOnline - 1);
+            if (emailUsuarioLogado !== null && emailUsuarioLogado !== undefined) {
+                const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(errorData.mensagem);
+                    return;
                 }
-            });
+    
+                const dados = await response.json();
+    
+                for (const usuario of dados) {
+                    if (usuario.email === emailUsuarioLogado) {
+                        atualizarStatusUsuario(usuario, usuario.id, false);
+                        setTotalOnline((totalOnline) => totalOnline - 1);
+                        eraseCookie("authToken");
+                        eraseCookie("usuarioLogado");
+                        break; // Sai do loop ao encontrar o usuário
+                    }
+                }
+            } else {
+                eraseCookie("authToken");
+                eraseCookie("usuarioLogado");
+            }
+    
+            if (window.location.pathname !== "/") {
+                window.location.href = "/";
+            }
+    
         } catch (error) {
             console.error("Erro ao fazer logout:", error.message || "Erro desconhecido");
         }
     };
+    
 
     return {
         usuarios,

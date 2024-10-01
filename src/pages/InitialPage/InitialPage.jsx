@@ -2,7 +2,7 @@ import LayoutComum from "../../components/molecules/LayoutComumLocais/LayoutComu
 
 function InitialPage() {
     return (
-        <LayoutComum titulo="Locais incríveis - Pagina Privada" showAuthButtons={true} />
+        <LayoutComum titulo="Locais incríveis - Pagina Privada" showAuthButtons={false} />
     );
 }
 export default InitialPage;

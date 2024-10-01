@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
-
 import LoginPage from "../pages/LoginPage/LoginPage";
 import CadastroUsuarioPage from "../pages/CadastroUsuarioPage/CadastroUsuarioPage";
 import ErroPage from "../pages/ErroPage/ErroPage";
@@ -14,7 +13,7 @@ import InitialPage from "../pages/InitialPage/InitialPage";
 const isAuthenticated = getCookie("usuarioLogado") !== null;
 
 const PrivateRoute = ({ children }) => {
-    return isAuthenticated ? children : <Navigate to="/" replace={true} />;
+    return isAuthenticated ? children : <Navigate to="/" />;
 };
 
 const routers = createBrowserRouter([

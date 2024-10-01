@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
 import useLatitudeLongitude from "../../../hooks/useLatitudeLongitude";
+import { getCookie } from "../../../hooks/useCookies";
 
 function CadastroLocalForm() {
     const {
@@ -66,7 +67,7 @@ function CadastroLocalForm() {
             editarLocal(
                 {
                     ...formValue,
-                    usuario: localStorage.getItem("usuarioLogado"),
+                    usuario: getCookie("usuarioLogado"),
                     atividades: atividades
                 },
                 id
@@ -74,7 +75,7 @@ function CadastroLocalForm() {
         } else {
             cadastrarLocal({
                 ...formValue,
-                usuario: localStorage.getItem("usuarioLogado"),
+                usuario: getCookie("usuarioLogado"),
                 atividades: atividades
             });
             navigate("/dashboard");

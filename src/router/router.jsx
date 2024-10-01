@@ -9,6 +9,7 @@ import DashboardPage from "../pages/DashboardPage/DashboardPage";
 import CadastroLocalPage from "../pages/CadastroLocalPage/CadastroLocalPage";
 import ListaLocalPage from "../pages/ListaLocalPage/ListaLocalPage";
 import { getCookie } from "../hooks/useCookies";
+import InitialPage from "../pages/InitialPage/InitialPage";
 
 const isAuthenticated = getCookie("usuarioLogado") !== null;
 
@@ -19,6 +20,10 @@ const PrivateRoute = ({ children }) => {
 const routers = createBrowserRouter([
     {
         path: "/",
+        element: <DashboardPage />
+    },
+    {
+        path: "/login",
         element: <LoginPage />
     },
     {
@@ -35,9 +40,9 @@ const routers = createBrowserRouter([
         errorElement: <ErroPage />,
         children: [
             {
-                path: "/dashboard",
+                path: "/home",
                 element:
-                    <DashboardPage />
+                    <InitialPage />
 
             },
             {

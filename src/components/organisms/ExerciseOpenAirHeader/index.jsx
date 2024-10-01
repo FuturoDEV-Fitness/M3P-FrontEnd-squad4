@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Button, Menu, MenuItem } from "@mui/material";
 import "./style.css";
 import { Link, useNavigate } from "react-router-dom";

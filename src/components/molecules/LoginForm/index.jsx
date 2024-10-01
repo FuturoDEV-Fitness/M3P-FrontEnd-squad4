@@ -1,9 +1,11 @@
-import { Grid } from "@mui/material";
-import { TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { useApiUsuario } from "../../../hooks/useApiUsuario";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+
 function LoginForm() {
     const {
         register,
@@ -12,6 +14,12 @@ function LoginForm() {
     } = useForm();
 
     const { login } = useApiUsuario();
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     function sendLogin(formValue) {
         login({
@@ -35,6 +43,7 @@ function LoginForm() {
                                 type="email"
                                 variant="outlined"
                                 name="email"
+                                placeholder="email"
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                                 {...register("email", {
@@ -48,11 +57,21 @@ function LoginForm() {
                             <TextField
                                 className="password"
                                 id="outlined-password-input"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 autoComplete="current-password"
                                 name="senha"
+                                placeholder="senha"
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={togglePasswordVisibility} edge="end">
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                                 {...register("password", {
                                     required: "Este campo é obrigatório.",
                                     maxLength: {

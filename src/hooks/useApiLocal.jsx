@@ -11,7 +11,7 @@ export const useApiLocal = () => {
 
 
     useEffect(() => {
-        if (token && isTokenValid(token)) {
+        if (token) {
             getLocais();
         } else {
             setError("Token não encontrado");
@@ -20,12 +20,19 @@ export const useApiLocal = () => {
     }, [token]);
 
     const getLocais = async () => {
+        const token = localStorage.getItem('token'); // Obtém o token, se existir
+
+        // Se houver token, usamos /locais (requer autenticação), caso contrário, usamos /dashboard (público)
+        const url = token
+            ? `${import.meta.env.VITE_URL_API}/locais`  // URL para a página privada
+            : `${import.meta.env.VITE_URL_API}/dashboard`; // URL para a página pública
+
+        const headers = token
+            ? { "Authorization": `Bearer ${token}` }  // Cabeçalho com token, se houver
+            : {};  // Sem cabeçalho para a página pública
+
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_API}/locais`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await fetch(url, { headers });
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -34,7 +41,6 @@ export const useApiLocal = () => {
             }
 
             const data = await response.json();
-
             setLocais(data);
             setTotalLocais(data.length);
         } catch (error) {

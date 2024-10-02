@@ -23,19 +23,21 @@ import { useEffect } from "react";
 function CardLocalForm({ dadosLocal }) {
  const { removerLocal } = useApiLocal();
  const navigate = useNavigate();
- const atividadesTrue = Object.entries(dadosLocal.atividades)
-  .filter(([key, value]) => value === true)
-  .map(([key, value]) => key);
+
+ const listaAtividades = dadosLocal.atividades.map(
+  (atividade) => atividade.nomeAtividade
+ );
+
  const location = useLocation();
  const [visivel, setVisivel] = useState(true);
- console.log("ATIVIADDES: " + JSON.stringify(dadosLocal.nome));
+ console.log("ATIVIDADES: " + JSON.stringify(dadosLocal.atividades));
  function editarLocalSelecionado(idSelecionado) {
   navigate(`/cadastroLocal/${idSelecionado}`);
  }
 
  useEffect(() => {
-  console.log(location.pathname == "/dashboard");
-  if (location.pathname == "/dashboard") {
+  console.log(location.pathname == "/home");
+  if (location.pathname == "/home") {
    setVisivel(false);
   } else {
    setVisivel(true);
@@ -60,9 +62,8 @@ function CardLocalForm({ dadosLocal }) {
      <IconButton
       onClick={() => window.open(dadosLocal.linkmap, "_blank")}
       size="large"
-      focusVisible
       className="buttonLinkMap"
-      disableRipple="false"
+      disableRipple
       sx={{
        position: "absolute",
        bottom: 10,
@@ -116,11 +117,10 @@ function CardLocalForm({ dadosLocal }) {
        marginTop: "10px",
        gap: "20px"
       }}>
-      {atividadesTrue.map((atividade, index) => (
-       <Chip
-        label={atividade[0].toUpperCase() + atividade.slice(1)}
-        key={index}
-       />
+      {listaAtividades.map((element, index) => (
+       <Typography key={index}>
+        {element.charAt(0).toUpperCase() + element.slice(1)}
+       </Typography>
       ))}
      </Grid>
      <Divider
@@ -141,7 +141,6 @@ function CardLocalForm({ dadosLocal }) {
       </CardActions>
      )}
     </Box>
-    <CardActions></CardActions>
    </Card>
   </>
  );

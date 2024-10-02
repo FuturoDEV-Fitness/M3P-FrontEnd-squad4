@@ -69,7 +69,7 @@ export const useApiUsuario = () => {
             atualizarStatusUsuario(data.nome, data.usuarioId, true);
             console.log(totalOnline);
 
-            window.location.href = "/dashboard";
+            window.location.href = "/home";
         } catch (error) {
             console.error("Erro ao fazer login:", error);
         }
@@ -140,7 +140,7 @@ export const useApiUsuario = () => {
 
     const logout = async (emailUsuarioLogado) => {
         try {
-            if (emailUsuarioLogado !== null && emailUsuarioLogado !== undefined) {
+            if (emailUsuarioLogado) {
                 const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
     
                 if (!response.ok) {
@@ -153,11 +153,11 @@ export const useApiUsuario = () => {
     
                 for (const usuario of dados) {
                     if (usuario.email === emailUsuarioLogado) {
-                        atualizarStatusUsuario(usuario, usuario.id, false);
+                        await atualizarStatusUsuario(usuario, usuario.id, false);
                         setTotalOnline((totalOnline) => totalOnline - 1);
                         eraseCookie("authToken");
                         eraseCookie("usuarioLogado");
-                        break; // Sai do loop ao encontrar o usuário
+                        break;
                     }
                 }
             } else {
@@ -165,7 +165,8 @@ export const useApiUsuario = () => {
                 eraseCookie("usuarioLogado");
             }
     
-            if (window.location.pathname !== "/") {
+            const pathsToExclude = ["/", "/cadastroUsuario", "/login", "/cadastroLocal"];
+            if (!pathsToExclude.includes(window.location.pathname)) {
                 window.location.href = "/";
             }
     
@@ -174,6 +175,7 @@ export const useApiUsuario = () => {
         }
     };
     
+
 
     return {
         usuarios,

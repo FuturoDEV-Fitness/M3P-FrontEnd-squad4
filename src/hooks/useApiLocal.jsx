@@ -11,7 +11,7 @@ export const useApiLocal = () => {
 
 
     useEffect(() => {
-        if (token) {
+        if (token && isTokenValid(token)) {
             getLocais();
         } else {
             setError("Token não encontrado");
@@ -20,7 +20,7 @@ export const useApiLocal = () => {
     }, [token]);
 
     const getLocais = async () => {
-        const token = localStorage.getItem('token'); // Obtém o token, se existir
+        const token = getCookie('token'); // Obtém o token, se existir
 
         // Se houver token, usamos /locais (requer autenticação), caso contrário, usamos /dashboard (público)
         const url = token

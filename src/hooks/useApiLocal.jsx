@@ -9,14 +9,8 @@ export const useApiLocal = () => {
     const [totalLocais, setTotalLocais] = useState(0);
     const token = getCookie("authToken");
 
-
     useEffect(() => {
-        if (token && isTokenValid(token)) {
-            getLocais();
-        } else {
-            setError("Token não encontrado");
-            setLoading(false);
-        }
+        getLocais();
     }, [token]);
 
     const getLocais = async () => {

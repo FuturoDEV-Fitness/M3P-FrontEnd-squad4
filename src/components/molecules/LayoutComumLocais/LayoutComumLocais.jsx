@@ -63,10 +63,17 @@ function LayoutComum({ titulo, showAuthButtons }) {
             <Typography variant="h4" className={styles.titulo}>{titulo}</Typography>
 
 
-            <Grid className={styles.card}>
-                {locais.map((local, index) => (
-                    <CardLocalForm dadosLocal={local} key={index} visivel={showAuthButtons} />
-                ))}
+            <Grid
+                sx={{ flexDirection: "column" }}
+                className={styles.containerLayoutListaLocais}>
+                <Grid sx={{ flexDirection: "column" }} className={styles.containerCards}>
+                    {/* <Typography className={styles.titulo}>Locais incríveis</Typography> */}
+                    {locais.map(
+                        (local, index) => (
+                            console.log(local), (<CardLocalForm dadosLocal={local} key={index} />)
+                        )
+                    )}
+                </Grid>
             </Grid>
         </Grid >
     );

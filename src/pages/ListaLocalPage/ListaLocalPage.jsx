@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import CardLocalForm from "../../components/molecules/CardLocalForm";
 import { LocalContext } from "../../../src/context/LocalContext";
 import styles from "./ListaLocalPage.module.css";

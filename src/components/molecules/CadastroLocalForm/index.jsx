@@ -78,10 +78,10 @@ function CadastroLocalForm() {
                 usuario: getCookie("usuarioLogado"),
                 atividades: atividades
             });
-            navigate("/dashboard");
+            navigate("/home");
         }
 
-        navigate("/dashboard");
+        navigate("/home");
     }
 
     function carregarDadosEdicao(idSelecionado) {

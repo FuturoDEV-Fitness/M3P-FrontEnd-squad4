@@ -14,6 +14,7 @@ function LayoutComum({ titulo, showAuthButtons }) {
     const { locais, totalLocais } = useApiLocal();
     const { totalOnline } = useApiUsuario();
 
+
     return (
         <Grid
             container

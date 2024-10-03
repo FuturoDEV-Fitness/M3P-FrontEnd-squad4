@@ -9,12 +9,12 @@ export const useApiUsuario = () => {
     const [totalOnline, setTotalOnline] = useState(0);
 
     useEffect(() => {
-        const token = getCookie("authToken");
-        if (token && isTokenValid(token)) {
-            getUsuarios();
-        } else {
-            logout();
-        }
+        // const token = getCookie("authToken");
+        // if (token && isTokenValid(token)) {
+        //     getUsuarios();
+        // } else {
+        //     logout();
+        // }
     }, []);
 
     const getUsuarios = async () => {
@@ -142,15 +142,15 @@ export const useApiUsuario = () => {
         try {
             if (emailUsuarioLogado) {
                 const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
-    
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(errorData.mensagem);
                     return;
                 }
-    
+
                 const dados = await response.json();
-    
+
                 for (const usuario of dados) {
                     if (usuario.email === emailUsuarioLogado) {
                         await atualizarStatusUsuario(usuario, usuario.id, false);
@@ -164,17 +164,17 @@ export const useApiUsuario = () => {
                 eraseCookie("authToken");
                 eraseCookie("usuarioLogado");
             }
-    
+
             const pathsToExclude = ["/", "/cadastroUsuario", "/login", "/cadastroLocal"];
             if (!pathsToExclude.includes(window.location.pathname)) {
                 window.location.href = "/";
             }
-    
+
         } catch (error) {
             console.error("Erro ao fazer logout:", error.message || "Erro desconhecido");
         }
     };
-    
+
 
 
     return {

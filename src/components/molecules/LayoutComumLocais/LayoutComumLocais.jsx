@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 
 
-function LayoutComum({ titulo, showAuthButtons }) {
+function LayoutComum({ titulo, showAuthButtons, visivel }) {
     const { locais, totalLocais } = useApiLocal();
     const { totalOnline } = useApiUsuario();
 
@@ -70,7 +70,7 @@ function LayoutComum({ titulo, showAuthButtons }) {
                     {/* <Typography className={styles.titulo}>Locais incríveis</Typography> */}
                     {locais.map(
                         (local, index) => (
-                            console.log(local), (<CardLocalForm dadosLocal={local} key={index} />)
+                            console.log(local), (<CardLocalForm dadosLocal={local} key={index} visivel={visivel} />)
                         )
                     )}
                 </Grid>

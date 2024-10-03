@@ -1,15 +1,21 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import CardLocalForm from "../../components/molecules/CardLocalForm";
 import { LocalContext } from "../../../src/context/LocalContext";
 import styles from "./ListaLocalPage.module.css";
 import { Grid, Typography } from "@mui/material";
 import LayoutComum from "../../components/molecules/LayoutComumLocais/LayoutComumLocais";
+import { getCookie } from "../../hooks/useCookies";
+
 
 function ListaLocalPage() {
-    // const { locais } = useContext(LocalContext);
+
 
     return (
-        <LayoutComum titulo="Locais criados por você - Pagina Privada" showAuthButtons={false} visivel={true} />
+        <LayoutComum
+            titulo={`Locais criados por você `}
+            showAuthButtons={false}
+            visivel={true}
+        />
     );
 }
 

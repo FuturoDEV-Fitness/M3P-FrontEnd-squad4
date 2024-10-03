@@ -60,9 +60,11 @@ export const useApiUsuario = () => {
             const data = await response.json();
             const token = data.Authorization;
 
+
             // Armazenando em cookies
             setCookie("authToken", token, 7); // Cookie expira em 7 dias
             setCookie("usuarioLogado", dadosUsuario.email, 7);
+            setCookie("usuarioId", data.usuarioId, 7);
 
             setTotalOnline(totalOnline + 1);
             console.log("Total online:", totalOnline);
@@ -157,6 +159,7 @@ export const useApiUsuario = () => {
                         setTotalOnline((totalOnline) => totalOnline - 1);
                         eraseCookie("authToken");
                         eraseCookie("usuarioLogado");
+                        eraseCookie("usuarioId");
                         break;
                     }
                 }

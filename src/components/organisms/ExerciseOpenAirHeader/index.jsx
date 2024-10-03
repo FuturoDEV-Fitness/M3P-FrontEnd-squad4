@@ -1,14 +1,14 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import "./style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useApiUsuario } from "../../../hooks/useApiUsuario";
 import { getCookie } from "../../../hooks/useCookies";
+import { isTokenValid } from "../../../hooks/useValidaToken";
 
 function ExerciseOpenAirHeader() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const navigate = useNavigate();
     const { logout } = useApiUsuario();
 
     const handleClick = (event) => {
@@ -24,11 +24,12 @@ function ExerciseOpenAirHeader() {
         setAnchorEl(null);
     };
 
+
     return (
         <div className="header">
             <div className="navbar">
                 <span className="logoHeader">
-                    <Link className="labelHome" to="/dashboard">
+                    <Link className="labelHome" to="/home">
                         <img src="/assets/logo-exercita365.png" alt="Logo da página" />
                     </Link>
                 </span>

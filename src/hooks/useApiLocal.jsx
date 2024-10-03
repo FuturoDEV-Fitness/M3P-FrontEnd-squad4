@@ -14,29 +14,35 @@ export const useApiLocal = () => {
     }, [token]);
 
     const getLocais = async () => {
-        const token = getCookie('token'); // Obtém o token, se existir
-
-        // Se houver token, usamos /locais (requer autenticação), caso contrário, usamos /dashboard (público)
-        const url = token
-            ? `${import.meta.env.VITE_URL_API}/locais`  // URL para a página privada
-            : `${import.meta.env.VITE_URL_API}/dashboard`; // URL para a página pública
-
+        const token = getCookie('authToken'); // Obtém o token, se existir
+        const usuarioId = getCookie('usuarioId'); // Obtém o ID do usuário do cookie
+    
+        const isListaLocaisPage = window.location.pathname === '/listaLocal'; // Verifica se está na página '/listaLocal'
+    
+        // Verifica se o token existe e se a rota atual é '/listaLocal'
+        const url = token && isListaLocaisPage
+                ? `${import.meta.env.VITE_URL_API}/locais/usuario/${usuarioId}`  // Se na página '/listaLocal', usa '/locais/:id'
+                : `${import.meta.env.VITE_URL_API}/dashboard`; // Se não estiver na página '/listaLocal', usa '/dashboard'
+            
         const headers = token
-            ? { "Authorization": `Bearer ${token}` }  // Cabeçalho com token, se houver
+            ? {
+                "Authorization": `Bearer ${token}`,  // Cabeçalho com token, se houver
+                "Content-Type": "application/json"
+            }
             : {};  // Sem cabeçalho para a página pública
-
+    
         try {
             const response = await fetch(url, { headers });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
                 alert(errorData.mensagem);
                 return;
             }
-
+    
             const data = await response.json();
             setLocais(data);
-            setTotalLocais(data.length);
+            setTotalLocais(data.length || 1); // Garante que o total seja atualizado corretamente
         } catch (error) {
             console.error("Erro ao buscar locais:", error);
             setError(error.message || "Erro desconhecido");
@@ -44,6 +50,9 @@ export const useApiLocal = () => {
             setLoading(false);
         }
     };
+    
+
+
 
     const cadastrarLocal = async (formData) => {
         try {

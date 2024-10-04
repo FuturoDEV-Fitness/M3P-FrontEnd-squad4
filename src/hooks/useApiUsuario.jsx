@@ -168,7 +168,7 @@ export const useApiUsuario = () => {
                 eraseCookie("usuarioLogado");
             }
     
-            const pathsToExclude = ["/", "/cadastroUsuario", "/login", "/cadastroLocal"];
+            const pathsToExclude = ["/", "/cadastroUsuario", "/login"];
             if (!pathsToExclude.includes(window.location.pathname)) {
                 window.location.href = "/";
             }

@@ -6,7 +6,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { Link } from "react-router-dom";
 
-function LayoutComum({ titulo, showAuthButtons, visivel }) {
+function LayoutComum({ titulo, showAuthButtons, showIcons, visivel }) {
     const { locais, totalLocais } = useApiLocal();
     const { totalOnline } = useApiUsuario();
 
@@ -86,6 +86,27 @@ function LayoutComum({ titulo, showAuthButtons, visivel }) {
                         </Grid>
                     </Box>
                 </>
+            )}
+
+            {showIcons && !showAuthButtons && (
+                <Grid
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: { xs: "10px", md: "20px" },
+                        margin: "20px 0",
+                        flexWrap: "wrap",
+                    }}
+                >
+                    <Badge color="primary" badgeContent={totalOnline} max={999}>
+                        <PeopleIcon sx={{ color: "black", fontSize: 35 }} />
+                    </Badge>
+                    <Badge color="primary" badgeContent={totalLocais} max={999}>
+                        <FmdGoodIcon sx={{ color: "black", fontSize: 35 }} />
+                    </Badge>
+                </Grid>
             )}
 
             <Typography

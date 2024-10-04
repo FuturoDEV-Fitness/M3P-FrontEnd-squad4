@@ -2,6 +2,7 @@ import CardLocalForm from "../../components/molecules/CardLocalForm";
 import { LocalContext } from "../../../src/context/LocalContext";
 import styles from "./ListaLocalPage.module.css";
 import { Grid, Typography } from "@mui/material";
+import { useContext } from "react";
 
 function ListaLocalPage() {
  const { locais } = useContext(LocalContext);

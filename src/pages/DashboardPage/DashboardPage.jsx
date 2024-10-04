@@ -2,7 +2,7 @@ import LayoutComum from "../../components/molecules/LayoutComumLocais/LayoutComu
 
 function DashboardPage() {
     return (
-        <LayoutComum titulo="Locais incríveis - Página Publica" showAuthButtons={true} />
+        <LayoutComum titulo="Locais incríveis - Página Publica" showAuthButtons={true} visivel={false} />
     );
 }
 

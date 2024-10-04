@@ -20,7 +20,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import MapaForm from "../MapaForm";
 import { useEffect } from "react";
 
-function CardLocalForm({ dadosLocal }) {
+function CardLocalForm({ dadosLocal, visivel }) {
  const { removerLocal } = useApiLocal();
  const navigate = useNavigate();
 
@@ -29,21 +29,11 @@ function CardLocalForm({ dadosLocal }) {
  );
 
  const location = useLocation();
- const [visivel, setVisivel] = useState(true);
- console.log("ATIVIDADES: " + JSON.stringify(dadosLocal.atividades));
+
  function editarLocalSelecionado(idSelecionado) {
   navigate(`/cadastroLocal/${idSelecionado}`);
  }
-
- useEffect(() => {
-  console.log(location.pathname == "/home");
-  if (location.pathname == "/home") {
-   setVisivel(false);
-  } else {
-   setVisivel(true);
-  }
- }, []);
-
+ 
  return (
   <>
    <Card className="cardContainer" sx={{ boxShadow: 4 }}>

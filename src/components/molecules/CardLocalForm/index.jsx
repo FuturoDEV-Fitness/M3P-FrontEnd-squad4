@@ -31,7 +31,7 @@ function CardLocalForm({ dadosLocal, visivel }) {
             sx={{
                 display: "flex",
                 flexDirection: { xs: "column", md: "row" },
-                width: { xs: "100%", sm: "80vw", md: "70rem" },
+                width: { xs: "100%", sm: "80vw", md: "60rem" },
                 marginBottom: 2,
                 boxShadow: 4,
                 overflow: "hidden" // Prevent overflow

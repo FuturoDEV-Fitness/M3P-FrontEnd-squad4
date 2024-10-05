@@ -133,7 +133,7 @@ function LayoutComum({ titulo, showAuthButtons, showIcons, visivel }) {
                     alignItems="center"
                     sx={{
                         width: "100%",
-                        maxWidth: "1200px",
+                        // maxWidth: "1200px",
                         padding: { xs: "10px", sm: "20px" },
                         gap: { xs: "10px", md: "20px" },
                     }}
@@ -145,9 +145,13 @@ function LayoutComum({ titulo, showAuthButtons, showIcons, visivel }) {
                             visivel={visivel}
                             sx={{
                                 width: "100%",
-                                maxWidth: { xs: "100%", md: "600px" },
+                                maxWidth: { xs: "100%", md: "500px" },
                                 margin: { xs: "10px 0", md: "20px 0" },
-                            }}
+                                display: "flex",
+                                justifyContent: "center",
+
+                            }
+                            }
                         />
                     ))}
                 </Grid>

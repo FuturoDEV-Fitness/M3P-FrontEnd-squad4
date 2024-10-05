@@ -34,7 +34,7 @@ function CardLocalForm({ dadosLocal, visivel }) {
                 width: { xs: "100%", sm: "80vw", md: "60rem" },
                 marginBottom: 2,
                 boxShadow: 4,
-                overflow: "hidden" // Prevent overflow
+                overflow: "hidden",
             }}
         >
             <Grid
@@ -58,7 +58,7 @@ function CardLocalForm({ dadosLocal, visivel }) {
                         left: 10,
                         zIndex: 1000,
                         backgroundColor: "rgba(255, 255, 255, 0.9)",
-                        border: 3
+                        border: 3,
                     }}
                 >
                     <MapOutlinedIcon fontSize="large" />
@@ -69,8 +69,9 @@ function CardLocalForm({ dadosLocal, visivel }) {
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
-                    p: 2, // Add padding for spacing
-                    flexGrow: 1 // Allow box to grow in flex
+                    p: 2,
+                    flexGrow: 1,
+                    marginBottom: { sm: 2, md: 2 },
                 }}
             >
                 <CardContent sx={{ paddingBottom: 0 }}>

@@ -8,16 +8,16 @@ import {
  FormGroup,
  FormControlLabel,
  Checkbox,
- Typography
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./index.css";
-import { Link, redirect, useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect,useContext } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
 import useLatitudeLongitude from "../../../hooks/useLatitudeLongitude";
 import { getCookie } from "../../../hooks/useCookies";
+import {  LocalContext } from "../../../context/LocalContext"
 
 function CadastroLocalForm() {
  const {
@@ -27,10 +27,10 @@ function CadastroLocalForm() {
   setValue,
   formState: { errors }
  } = useForm();
+ const { atividadesDisponiveis } = useContext(LocalContext)
 
- const { atividadesDisponiveis, cadastrarLocal, editarLocal, getLocalPorId } =
+ const { cadastrarLocal, editarLocal, getLocalPorId } =
   useApiLocal();
- const navigate = useNavigate();
 
  const { id } = useParams();
  const [label, setLabel] = useState("Cadastrar");

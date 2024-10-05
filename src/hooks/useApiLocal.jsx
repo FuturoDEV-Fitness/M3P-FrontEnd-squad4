@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getCookie } from "./useCookies.js";
-import { isTokenValid } from "./useValidaToken.js";
 
 export const useApiLocal = () => {
  const [locais, setLocais] = useState([]);
@@ -12,7 +11,9 @@ export const useApiLocal = () => {
 
  useEffect(() => {
   getLocais();
-  getAtividades();
+  if(token) {
+    getAtividades();
+  }
  }, [token]);
 
  const getLocais = async () => {

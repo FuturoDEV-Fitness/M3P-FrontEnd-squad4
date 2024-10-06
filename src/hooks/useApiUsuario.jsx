@@ -70,8 +70,8 @@ export const useApiUsuario = () => {
             console.log("Total online:", totalOnline);
             atualizarStatusUsuario(data.nome, data.usuarioId, true);
             console.log(totalOnline);
-
-            window.location.href = "/home";
+            
+            return true;
         } catch (error) {
             console.error("Erro ao fazer login:", error);
         }

@@ -1,7 +1,7 @@
 import { Grid, TextField, Button, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./index.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useApiUsuario } from "../../../hooks/useApiUsuario";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -14,18 +14,28 @@ function LoginForm() {
     } = useForm();
 
     const { login } = useApiUsuario();
-
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    function sendLogin(formValue) {
-        login({
-            email: formValue.email,
-            password: formValue.password
-        });
+    async function sendLogin(formValue) {
+        try {
+            const success = await login({
+                email: formValue.email,
+                password: formValue.password
+            });
+
+            if (success) {
+                navigate("/home");
+            } else {
+                console.error("Falha no login.");
+            }
+        } catch (error) {
+            console.error("Erro ao tentar fazer login:", error);
+        }
     }
 
     return (

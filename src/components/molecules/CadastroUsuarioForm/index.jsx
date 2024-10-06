@@ -26,15 +26,23 @@ function CadastroUsuarioForm() {
 
  const navigate = useNavigate();
 
- function sendCadastro(formValue) {
-  if (usuarios.find((usuario) => usuario.cpf === formValue.cpf)) {
-   alert("Usuario ja cadastrado");
-
-   return;
+ //Validação para quantidade de caracteres no Input de CPF
+ const handleInput = (event) => {
+  const maxLength = 11;
+  if (event.target.value.length > maxLength) {
+   event.target.value = event.target.value.slice(0, maxLength);
   }
+ };
 
-  cadastrarUsuario({ ...formValue, cpf: formValue.cpf.replace(/\D/g, "") });
-  navigate("/");
+ async function sendCadastro(formValue) {
+  const userRegister = await cadastrarUsuario({
+   ...formValue,
+   cpf: formValue.cpf.replace(/\D/g, "")
+  });
+
+  if (userRegister) {
+   navigate("/");
+  }
  }
 
  const consultaCep = async () => {
@@ -100,6 +108,7 @@ function CadastroUsuarioForm() {
           message: "Este campo aceita no máximo 11 caracteres."
          }
         })}
+        onInput={handleInput}
        />
 
        <TextField
@@ -143,6 +152,10 @@ function CadastroUsuarioForm() {
          maxLength: {
           value: 20,
           message: "Este campo aceita no máximo 20 caracteres."
+         },
+         minLength: {
+          value: 8,
+          message: "Este campo aceita no mínimo 8 caracteres."
          }
         })}
        />

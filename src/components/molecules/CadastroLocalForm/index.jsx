@@ -1,322 +1,288 @@
 /* eslint-disable */
 import {
- TextField,
- Grid,
- Button,
- FormLabel,
- FormControl,
- FormGroup,
- FormControlLabel,
- Checkbox,
+    TextField,
+    Grid,
+    Button,
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormControlLabel,
+    Checkbox,
+    Box,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import "./index.css";
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect,useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
 import useLatitudeLongitude from "../../../hooks/useLatitudeLongitude";
 import { getCookie } from "../../../hooks/useCookies";
-import {  LocalContext } from "../../../context/LocalContext"
+import { LocalContext } from "../../../context/LocalContext";
 
 function CadastroLocalForm() {
- const {
-  register,
-  handleSubmit,
-  getValues,
-  setValue,
-  formState: { errors }
- } = useForm();
- const { atividadesDisponiveis } = useContext(LocalContext)
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        setValue,
+        formState: { errors }
+    } = useForm();
+    const { atividadesDisponiveis } = useContext(LocalContext);
+    const { cadastrarLocal, editarLocal, getLocalPorId } = useApiLocal();
+    const { id } = useParams();
+    const [label, setLabel] = useState("Cadastrar");
 
- const { cadastrarLocal, editarLocal, getLocalPorId } =
-  useApiLocal();
+    const consultaCep = async () => {
+        let cepConsulta = getValues("cep").replace(/\D/g, "");
+        if (cepConsulta !== "") {
+            const dadosCep = await useBuscaCep(cepConsulta);
+            setValue("logradouro", dadosCep.logradouro);
+            setValue("municipio", dadosCep.localidade);
+            setValue("uf", dadosCep.uf);
+            const dadosLatLong = await useLatitudeLongitude(cepConsulta);
+            setValue("latitude", dadosLatLong.lat);
+            setValue("longitude", dadosLatLong.lng);
+        }
+    };
 
- const { id } = useParams();
- const [label, setLabel] = useState("Cadastrar");
+    const [atividades, setAtividades] = useState({
+        caminhada: false,
+        trilha: false,
+        musculacao: false,
+        natacao: false,
+        surf: false,
+        ciclismo: false,
+        skate: false,
+        corrida: false,
+        futebol: false
+    });
 
- const consultaCep = async () => {
-  let cepConsulta = getValues("cep").replace(/\D/g, "");
-  if (cepConsulta !== "") {
-   const dadosCep = await useBuscaCep(cepConsulta);
-   setValue("logradouro", dadosCep.logradouro);
-   setValue("municipio", dadosCep.localidade);
-   setValue("uf", dadosCep.uf);
-   const dadosLatLong = await useLatitudeLongitude(cepConsulta);
-   setValue("latitude", dadosLatLong.lat);
-   setValue("longitude", dadosLatLong.lng);
-  }
- };
+    const getAtividadesSelecionadas = (event) => {
+        setAtividades({
+            ...atividades,
+            [event.target.name]: event.target.checked
+        });
+    };
 
- const [atividades, setAtividades] = useState({
-  caminhada: false,
-  trilha: false,
-  musculacao: false,
-  natacao: false,
-  surf: false,
-  ciclismo: false,
-  skate: false,
-  corrida: false,
-  futebol: false
- });
+    function sendLocal(formValue) {
+        if (id != "" && id !== undefined) {
+            editarLocal(
+                {
+                    ...formValue,
+                    usuario: getCookie("usuarioLogado"),
+                    atividades: atividades
+                },
+                id
+            );
+        } else {
+            cadastrarLocal({
+                ...formValue,
+                usuario: getCookie("usuarioLogado"),
+                atividades: atividades
+            });
+            window.location.href = "/home";
+        }
 
- const getAtividadesSelecionadas = (event) => {
-  setAtividades({
-   ...atividades,
-   [event.target.name]: event.target.checked
-  });
- };
+        window.location.href = "/home";
+    }
 
- function sendLocal(formValue) {
-  if (id != "" && id !== undefined) {
-   editarLocal(
-    {
-     ...formValue,
-     usuario: getCookie("usuarioLogado"),
-     atividades: atividades
-    },
-    id
-   );
-  } else {
-   cadastrarLocal({
-    ...formValue,
-    usuario: getCookie("usuarioLogado"),
-    atividades: atividades
-   });
-   window.location.href = "/home";
-  }
+    function carregarDadosEdicao(idSelecionado) {
+        getLocalPorId(idSelecionado).then((response) => {
+            setValue("nome", response.nome);
+            setValue("descricao", response.descricao);
+            setValue("cep", response.cep);
+            setValue("logradouro", response.logradouro);
+            setValue("municipio", response.municipio);
+            setValue("uf", response.uf);
+            setValue("latitude", response.latitude);
+            setValue("longitude", response.longitude);
+            setAtividades(response.atividades);
+        });
+    }
 
-  window.location.href = "/home";
- }
+    function limparCampos() {
+        setValue("nome", "");
+        setValue("descricao", "");
+        setValue("cep", "");
+        setValue("logradouro", "");
+        setValue("municipio", "");
+        setValue("uf", "");
+        setValue("latitude", "");
+        setValue("longitude", "");
+        setAtividades({
+            caminhada: false,
+            trilha: false,
+            musculacao: false,
+            natacao: false,
+            surf: false,
+            ciclismo: false,
+            skate: false,
+            corrida: false,
+            futebol: false
+        });
+    }
 
- function carregarDadosEdicao(idSelecionado) {
-  getLocalPorId(idSelecionado).then((response) => {
-   setValue("nome", response.nome);
-   setValue("descricao", response.descricao);
-   setValue("cep", response.cep);
-   setValue("logradouro", response.logradouro);
-   setValue("municipio", response.municipio);
-   setValue("uf", response.uf);
-   setValue("latitude", response.latitude);
-   setValue("longitude", response.longitude);
-   setAtividades(response.atividades);
-  });
- }
+    useEffect(() => {
+        if (id != "" && id !== undefined) {
+            carregarDadosEdicao(id);
+            setLabel("Editar");
+        }
+        limparCampos();
+    }, [id]);
 
- function limparCampos() {
-  setValue("nome", "");
-  setValue("descricao", "");
-  setValue("cep", "");
-  setValue("logradouro", "");
-  setValue("municipio", "");
-  setValue("uf", "");
-  setValue("latitude", "");
-  setValue("longitude", "");
-  setAtividades({
-   caminhada: false,
-   trilha: false,
-   musculacao: false,
-   natacao: false,
-   surf: false,
-   ciclismo: false,
-   skate: false,
-   corrida: false,
-   futebol: false
-  });
- }
+    return (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", minHeight: "85vh", bgcolor: "#e5e5e5", px: 2 }}>
+            <Box component="form" onSubmit={handleSubmit(sendLocal)} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "100%", sm: "75%", md: "60%", lg: "50%", xl: "40%" }, maxWidth: "800px", bgcolor: "white", p: 3, borderRadius: 2, marginTop: "80px", marginBottom: "25px" }}>
+                <Box sx={{ mb: 3 }}>
+                    <img src="/assets/logo-exercita365.png" alt="Logo Exercita365" style={{ width: "120px", height: "120px", marginTop: "50px" }} />
+                </Box>
 
- useEffect(() => {
-  if (id != "" && id !== undefined) {
-   carregarDadosEdicao(id);
-   setLabel("Editar");
-  }
-  limparCampos();
- }, [id]);
+                <TextField
+                    label="Nome do Local"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.nome}
+                    helperText={errors.nome?.message}
+                    {...register("nome", {
+                        required: "Este campo é obrigatório.",
+                        maxLength: { value: 100, message: "Máximo de 100 caracteres." }
+                    })}
+                    sx={{ fontSize: { sm: "0.9rem", md: "1rem", lg: "1.1rem" } }}
+                />
 
- return (
-  <>
-   <Grid className="containerCadastroLocal">
-    <Grid className="cadastroFormLocal" sx={{ flexDirection: "column" }}>
-     <form>
-      <Grid className="logoCadastroLocal">
-       <img src="/assets/logo-exercita365.png" alt="Logo Exercita365" />
-      </Grid>
-      <Grid className="gridNomeLocal" sx={{ flexDirection: "column" }}>
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Nome do Local"
-        error={!!errors.nomeLocal}
-        helperText={errors.nomeLocal?.message}
-        sx={{ height: "1rem" }}
-        {...register("nome", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 100,
-          message: "Este campo aceita no máximo 100 caracteres."
-         }
-        })}
-       />
+                <TextField
+                    label="Descrição do Local"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    error={!!errors.descricao}
+                    helperText={errors.descricao?.message}
+                    {...register("descricao", {
+                        required: "Este campo é obrigatório.",
+                        maxLength: { value: 150, message: "Máximo de 150 caracteres." }
+                    })}
+                    sx={{ fontSize: { sm: "0.9rem", md: "1rem", lg: "1.1rem" } }}
+                />
 
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Descricao do Local"
-        error={!!errors.descricao}
-        helperText={errors.descricao?.message}
-        {...register("descricao", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 150,
-          message: "Este campo aceita no máximo 100 caracteres."
-         }
-        })}
-       />
-      </Grid>
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2, width: "100%", mb: 2, fontSize: { sm: "0.9rem", md: "1rem", lg: "1.1rem" } }}>
+                    <TextField
+                        label="CEP"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.cep}
+                        helperText={errors.cep?.message}
+                        {...register("cep", {
+                            required: "Este campo é obrigatório.",
+                            onBlur: () => consultaCep(),
+                            maxLength: { value: 8, message: "Máximo de 8 caracteres." }
+                        })}
 
-      <Grid className="dadosEndereco">
-       <TextField
-        placeholder="CEP"
-        variant="outlined"
-        error={!!errors.cep}
-        helperText={errors.cep?.message}
-        {...register("cep", {
-         required: "Este campo é obrigatório.",
-         onBlur: () => consultaCep(),
-         maxLength: {
-          value: 8,
-          message: "Este campo aceita no máximo 8 caracteres."
-         }
-        })}
-       />
+                    />
+                    <TextField
+                        label="Logradouro"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.logradouro}
+                        helperText={errors.logradouro?.message}
+                        {...register("logradouro", {
+                            required: "Este campo é obrigatório.",
+                            maxLength: { value: 60, message: "Máximo de 60 caracteres." }
+                        })}
+                    />
+                </Box>
 
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Logradouro"
-        error={!!errors.logradouro}
-        helperText={errors.logradouro?.message}
-        {...register("logradouro", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 60,
-          message: "Este campo aceita no máximo 30 caracteres."
-         }
-        })}
-       />
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2, width: "100%", mb: 2 }}>
+                    <TextField
+                        label="Município"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.municipio}
+                        helperText={errors.municipio?.message}
+                        {...register("municipio", {
+                            required: "Este campo é obrigatório.",
+                            maxLength: { value: 20, message: "Máximo de 20 caracteres." }
+                        })}
+                    />
+                    <TextField
+                        label="Estado"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.uf}
+                        helperText={errors.uf?.message}
+                        {...register("uf", {
+                            required: "Este campo é obrigatório.",
+                            maxLength: { value: 2, message: "Máximo de 2 caracteres." }
+                        })}
+                    />
+                </Box>
 
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Município"
-        error={!!errors.municipio}
-        helperText={errors.municipio?.message}
-        {...register("municipio", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 20,
-          message: "Este campo aceita no máximo 20 caracteres."
-         }
-        })}
-       />
+                <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2, width: "100%", mb: 3 }}>
+                    <TextField
+                        label="Latitude"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.latitude}
+                        helperText={errors.latitude?.message}
+                        {...register("latitude", {
+                            required: "Este campo é obrigatório.",
+                            maxLength: { value: 10, message: "Máximo de 10 caracteres." }
+                        })}
+                    />
+                    <TextField
+                        label="Longitude"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        error={!!errors.longitude}
+                        helperText={errors.longitude?.message}
+                        {...register("longitude", {
+                            required: "Este campo é obrigatório.",
+                            maxLength: { value: 10, message: "Máximo de 10 caracteres." }
+                        })}
+                    />
+                </Box>
 
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Estado"
-        error={!!errors.uf}
-        helperText={errors.uf?.message}
-        {...register("uf", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 2,
-          message: "Este campo aceita no máximo 2 caracteres."
-         }
-        })}
-       />
+                <FormControl component="fieldset" variant="standard" sx={{ width: "100%", mb: 3 }}>
+                    <FormLabel component="legend">Atividades Esportivas</FormLabel>
+                    <FormGroup sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                        {atividadesDisponiveis.map((atividade, index) => (
+                            <FormControlLabel
+                                key={index}
+                                control={
+                                    <Checkbox
+                                        checked={atividades[atividade.nomeAtividade] || false}
+                                        onChange={getAtividadesSelecionadas}
+                                        name={atividade.nomeAtividade}
+                                    />
+                                }
+                                label={atividade.nomeAtividade.charAt(0).toUpperCase() + atividade.nomeAtividade.slice(1)}
+                                sx={{ flex: "1 0 45%" }}
+                            />
+                        ))}
+                    </FormGroup>
+                </FormControl>
 
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Latitude"
-        error={!!errors.latitude}
-        helperText={errors.latitude?.message}
-        {...register("latitude", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 10,
-          message: "Este campo aceita no máximo 10 caracteres."
-         }
-        })}
-       />
-
-       <TextField
-        type="text"
-        variant="outlined"
-        placeholder="Longitude"
-        error={!!errors.longitude}
-        helperText={errors.longitude?.message}
-        {...register("longitude", {
-         required: "Este campo é obrigatório.",
-         maxLength: {
-          value: 10,
-          message: "Este campo aceita no máximo 10 caracteres."
-         }
-        })}
-       />
-      </Grid>
-      <Grid className="containerSelecoes" sx={{ flexDirection: "column" }}>
-       <FormControl
-        required
-        component="fieldset"
-        sx={{ m: 3 }}
-        variant="standard">
-        <FormLabel component="legend" className="atividade-titulo">
-         Atividades Esportivas
-        </FormLabel>
-        <FormGroup className="atividades">
-         <Grid sx={{ display: "flex", flexWrap: "wrap" }}>
-          {atividadesDisponiveis.map((atividade, index) => (
-           <div className="atividade-item" key={index}>
-            <FormControlLabel
-             control={
-              <Checkbox
-               defaultChecked={false}
-               onChange={getAtividadesSelecionadas}
-               name={atividade.nomeAtividade}
-              />
-             }
-             label={
-              atividade.nomeAtividade.charAt(0).toUpperCase() +
-              atividade.nomeAtividade.slice(1)
-             }
-            />
-           </div>
-          ))}
-         </Grid>
-        </FormGroup>
-       </FormControl>
-      </Grid>
-     </form>
-
-     <Grid className="containerButtonCadastro">
-      <Link to="/home">
-       <Button className="buttonHome" variant="contained" size="medium">
-        Home
-       </Button>
-      </Link>
-      <Button
-       onClick={handleSubmit(sendLocal)}
-       className="buttonCadastrar"
-       variant="contained"
-       size="medium">
-       {label}
-      </Button>
-     </Grid>
-    </Grid>
-   </Grid>
-  </>
- );
+                <Box sx={{ display: "flex", justifyContent: "center", gap: 2, width: "100%" }}>
+                    <Button type="submit" variant="contained" color="primary"
+                        sx={{ width: { xs: "100%", sm: "40%", md: "30%" } }} // Modificado para que o botão se ajuste ao tamanho da tela
+                    >
+                        {label}
+                    </Button>
+                    <Button component={Link} to="/home" variant="contained" color="secondary"
+                        sx={{ width: { xs: "100%", sm: "40%", md: "30%" } }} // Modificado para que o botão se ajuste ao tamanho da tela
+                    >
+                        Cancelar
+                    </Button>
+                </Box>
+            </Box>
+        </Box>
+    );
 }
 
 export default CadastroLocalForm;

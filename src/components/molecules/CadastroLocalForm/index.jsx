@@ -132,9 +132,9 @@ function CadastroLocalForm() {
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", minHeight: "85vh", bgcolor: "#e5e5e5", px: 2 }}>
-            <Box component="form" onSubmit={handleSubmit(sendLocal)} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "100%", sm: "75%", md: "60%", lg: "50%", xl: "40%" }, maxWidth: "800px", bgcolor: "white", p: 3, borderRadius: 2, marginTop: "80px", marginBottom: "25px" }}>
+            <Box component="form" onSubmit={handleSubmit(sendLocal)} sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: { xs: "100%", sm: "75%", md: "60%", lg: "50%", xl: "40%" }, maxWidth: "900px", bgcolor: "white", p: 3, borderRadius: 2, marginTop: "80px", marginBottom: "25px" }}>
                 <Box sx={{ mb: 3 }}>
-                    <img src="/assets/logo-exercita365.png" alt="Logo Exercita365" style={{ width: "120px", height: "120px", marginTop: "50px" }} />
+                    <img src="/assets/logo-exercita365.png" alt="Logo Exercita365" style={{ width: "120px", height: "120px", marginTop: "10px" }} />
                 </Box>
 
                 <TextField
@@ -191,6 +191,7 @@ function CadastroLocalForm() {
                             required: "Este campo é obrigatório.",
                             maxLength: { value: 60, message: "Máximo de 60 caracteres." }
                         })}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Box>
 
@@ -206,6 +207,7 @@ function CadastroLocalForm() {
                             required: "Este campo é obrigatório.",
                             maxLength: { value: 20, message: "Máximo de 20 caracteres." }
                         })}
+                        InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                         label="Estado"
@@ -218,6 +220,7 @@ function CadastroLocalForm() {
                             required: "Este campo é obrigatório.",
                             maxLength: { value: 2, message: "Máximo de 2 caracteres." }
                         })}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Box>
 
@@ -233,6 +236,7 @@ function CadastroLocalForm() {
                             required: "Este campo é obrigatório.",
                             maxLength: { value: 10, message: "Máximo de 10 caracteres." }
                         })}
+                        InputLabelProps={{ shrink: true }}
                     />
                     <TextField
                         label="Longitude"
@@ -245,6 +249,7 @@ function CadastroLocalForm() {
                             required: "Este campo é obrigatório.",
                             maxLength: { value: 10, message: "Máximo de 10 caracteres." }
                         })}
+                        InputLabelProps={{ shrink: true }}
                     />
                 </Box>
 

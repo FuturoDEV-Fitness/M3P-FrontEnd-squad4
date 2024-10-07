@@ -9,9 +9,10 @@ import {
  Checkbox,
  Box
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useForm} from "react-hook-form";
+import "./index.css";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect,useContext } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
 import useLatitudeLongitude from "../../../hooks/useLatitudeLongitude";
@@ -27,8 +28,12 @@ function CadastroLocalForm() {
   formState: { errors }
  } = useForm();
  const { atividadesDisponiveis } = useContext(LocalContext)
+
  const navigate = useNavigate();
- const { cadastrarLocal, editarLocal, getLocalPorId } = useApiLocal();
+
+ const { cadastrarLocal, editarLocal, getLocalPorId } =
+  useApiLocal();
+
  const { id } = useParams();
  const [label, setLabel] = useState("Cadastrar");
 
@@ -87,10 +92,10 @@ function CadastroLocalForm() {
     atividades: atividades
    });
    
-   navigate("/home");
+   navigate("/home", { replace: true });
   }
 
-  navigate("/home");
+  navigate("/home", { replace: true });
  }
 
  function carregarDadosEdicao(idSelecionado) {
@@ -137,6 +142,7 @@ function CadastroLocalForm() {
  }
 
  useEffect(() => {
+
   if (id != "" && id !== undefined) {
    carregarDadosEdicao(id);
    setLabel("Editar");

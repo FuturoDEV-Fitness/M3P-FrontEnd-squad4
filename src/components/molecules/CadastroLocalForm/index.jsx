@@ -7,17 +7,17 @@ import {
  FormControl,
  FormGroup,
  FormControlLabel,
- Checkbox,
+ Checkbox
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./index.css";
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect,useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
 import useLatitudeLongitude from "../../../hooks/useLatitudeLongitude";
 import { getCookie } from "../../../hooks/useCookies";
-import {  LocalContext } from "../../../context/LocalContext"
+import { LocalContext } from "../../../context/LocalContext";
 
 function CadastroLocalForm() {
  const {
@@ -27,10 +27,9 @@ function CadastroLocalForm() {
   setValue,
   formState: { errors }
  } = useForm();
- const { atividadesDisponiveis } = useContext(LocalContext)
+ const { atividadesDisponiveis } = useContext(LocalContext);
 
- const { cadastrarLocal, editarLocal, getLocalPorId } =
-  useApiLocal();
+ const { cadastrarLocal, editarLocal, getLocalPorId } = useApiLocal();
 
  const { id } = useParams();
  const [label, setLabel] = useState("Cadastrar");
@@ -45,6 +44,12 @@ function CadastroLocalForm() {
    const dadosLatLong = await useLatitudeLongitude(cepConsulta);
    setValue("latitude", dadosLatLong.lat);
    setValue("longitude", dadosLatLong.lng);
+  }
+ };
+
+ const handleInput = (event, maxLength) => {
+  if (event.target.value.length > maxLength) {
+   event.target.value = event.target.value.slice(0, maxLength);
   }
  };
 
@@ -188,6 +193,7 @@ function CadastroLocalForm() {
           message: "Este campo aceita no máximo 8 caracteres."
          }
         })}
+        onInput={(event) => handleInput(event, 8)}
        />
 
        <TextField

@@ -26,17 +26,25 @@ function CadastroUsuarioForm() {
 
   const navigate = useNavigate();
 
-  function sendCadastro(formValue) {
-    if (usuarios.find((usuario) => usuario.cpf === formValue.cpf)) {
-      alert("Usuario ja cadastrado");
-
-      return;
-    }
-
-    cadastrarUsuario({ ...formValue, cpf: formValue.cpf.replace(/\D/g, "") });
-    navigate("/");
+ //Validação para quantidade de caracteres no Input de CPF
+ const handleInput = (event) => {
+  const maxLength = 11;
+  if (event.target.value.length > maxLength) {
+   event.target.value = event.target.value.slice(0, maxLength);
   }
+ };
 
+ async function sendCadastro(formValue) {
+  const userRegister = await cadastrarUsuario({
+   ...formValue,
+   cpf: formValue.cpf.replace(/\D/g, "")
+  });
+
+  if (userRegister) {
+   navigate("/");
+  }
+ }
+  
   const consultaCep = async () => {
     let cepConsulta = getValues("cep").replace(/\D/g, "");
     if (cepConsulta !== "") {
@@ -90,19 +98,19 @@ function CadastroUsuarioForm() {
               </FormControl>
 
               <TextField
-                placeholder="CPF"
-                variant="outlined"
-                error={!!errors.cpf}
-                helperText={errors.cpf?.message}
-                {...register("cpf", {
-                  required: "Este campo é obrigatório.",
-                  maxLength: {
-                    value: 11,
-                    message: "Este campo aceita no máximo 11 caracteres."
-                  }
-                })}
-              />
-
+        placeholder="CPF"
+        variant="outlined"
+        error={!!errors.cpf}
+        helperText={errors.cpf?.message}
+        {...register("cpf", {
+         required: "Este campo é obrigatório.",
+         maxLength: {
+          value: 11,
+          message: "Este campo aceita no máximo 11 caracteres."
+         }
+        })}
+        onInput={handleInput}
+       />
               <TextField
                 placeholder="Data de Nascimento"
                 type="date"

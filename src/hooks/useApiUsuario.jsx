@@ -33,7 +33,10 @@ export const useApiUsuario = () => {
             console.log(data);
             setUsuarios(data);
             setTotalOnline(data.filter((usuario) => usuario.isOnline).length);
-            console.log("Total online:", data.filter((usuario) => usuario.isOnline).length);
+            console.log(
+                "Total online:",
+                data.filter((usuario) => usuario.isOnline).length
+            );
         } catch (error) {
             console.error("Erro ao buscar usuários:", error);
             setError(error.message || "Erro desconhecido");
@@ -80,7 +83,6 @@ export const useApiUsuario = () => {
             const data = await response.json();
             const token = data.Authorization;
 
-
             // Armazenando em cookies
             setCookie("authToken", token, 1); 
             setCookie("usuarioLogado", dadosUsuario.email, 1);
@@ -96,7 +98,6 @@ export const useApiUsuario = () => {
             console.error("Erro ao fazer login:", error);
         }
     };
-
 
     const cadastrarUsuario = async (dadosUsuario) => {
         const usuarioAdicionar = {
@@ -126,8 +127,12 @@ export const useApiUsuario = () => {
 
             alert("Usuário cadastrado com sucesso!");
             getUsuarios();
+            return true;
         } catch (error) {
-            console.error("Erro ao cadastrar usuário:", error.message || "Erro desconhecido");
+            console.error(
+                "Erro ao cadastrar usuário:",
+                error.message || "Erro desconhecido"
+            );
             alert("Erro ao cadastrar usuário!");
         }
     };
@@ -156,7 +161,10 @@ export const useApiUsuario = () => {
             console.log("Usuário atualizado com sucesso!");
             getUsuarios();
         } catch (error) {
-            console.error("Erro ao atualizar usuário:", error.message || "Erro desconhecido");
+            console.error(
+                "Erro ao atualizar usuário:",
+                error.message || "Erro desconhecido"
+            );
         }
     };
 
@@ -164,15 +172,15 @@ export const useApiUsuario = () => {
         try {
             if (emailUsuarioLogado) {
                 const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
-    
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(errorData.mensagem);
                     return;
                 }
-    
+
                 const dados = await response.json();
-    
+
                 for (const usuario of dados) {
                     if (usuario.email === emailUsuarioLogado) {
                         await atualizarStatusUsuario(usuario, usuario.id, false);
@@ -187,18 +195,15 @@ export const useApiUsuario = () => {
                 eraseCookie("authToken");
                 eraseCookie("usuarioLogado");
             }
-    
+
             const pathsToExclude = ["/", "/cadastroUsuario", "/login"];
             if (!pathsToExclude.includes(window.location.pathname)) {
                 window.location.href = "/";
             }
-    
         } catch (error) {
             console.error("Erro ao fazer logout:", error.message || "Erro desconhecido");
         }
     };
-    
-
 
     return {
         usuarios,
@@ -211,5 +216,4 @@ export const useApiUsuario = () => {
         atualizarStatusUsuario,
         login
     };
-
-}
+};

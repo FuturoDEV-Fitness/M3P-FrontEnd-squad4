@@ -9,6 +9,7 @@ export const useApiUsuario = () => {
     const [totalOnline, setTotalOnline] = useState(0);
 
     useEffect(() => {
+        getContadorUsuariosLogados();
         const token = getCookie("authToken");
         if (token && isTokenValid(token)) {
             getUsuarios();
@@ -41,6 +42,25 @@ export const useApiUsuario = () => {
         }
     };
 
+    const getContadorUsuariosLogados = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.mensagem);
+                return;
+            }
+            const data = await response.json();
+
+            setTotalOnline(data.filter((usuario) => usuario.isOnline).length);
+            console.log("Total online:", totalOnline);
+
+        } catch (error) {
+            console.error("Erro ao buscar contadores:", error);
+        }
+    };
+
     const login = async (dadosUsuario) => {
         try {
             const response = await fetch(`${import.meta.env.VITE_URL_API}/login`, {
@@ -62,9 +82,9 @@ export const useApiUsuario = () => {
 
 
             // Armazenando em cookies
-            setCookie("authToken", token, 7); // Cookie expira em 7 dias
-            setCookie("usuarioLogado", dadosUsuario.email, 7);
-            setCookie("usuarioId", data.usuarioId, 7);
+            setCookie("authToken", token, 1); 
+            setCookie("usuarioLogado", dadosUsuario.email, 1);
+            setCookie("usuarioId", data.usuarioId, 1);
 
             setTotalOnline(totalOnline + 1);
             console.log("Total online:", totalOnline);

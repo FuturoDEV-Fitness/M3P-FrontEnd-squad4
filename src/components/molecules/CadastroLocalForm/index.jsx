@@ -9,9 +9,9 @@ import {
  FormControlLabel,
  Checkbox,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import "./index.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect,useContext } from "react";
 import { useApiLocal } from "../../../hooks/useApiLocal";
 import useBuscaCep from "../../../hooks/useBuscaCep";
@@ -28,6 +28,8 @@ function CadastroLocalForm() {
   formState: { errors }
  } = useForm();
  const { atividadesDisponiveis } = useContext(LocalContext)
+
+ const navigate = useNavigate();
 
  const { cadastrarLocal, editarLocal, getLocalPorId } =
   useApiLocal();
@@ -83,10 +85,11 @@ function CadastroLocalForm() {
     usuario: getCookie("usuarioLogado"),
     atividades: atividades
    });
-   window.location.href = "/home";
+   
+   navigate("/home", { replace: true });
   }
 
-  window.location.href = "/home";
+  navigate("/home", { replace: true });
  }
 
  function carregarDadosEdicao(idSelecionado) {
@@ -126,6 +129,7 @@ function CadastroLocalForm() {
  }
 
  useEffect(() => {
+
   if (id != "" && id !== undefined) {
    carregarDadosEdicao(id);
    setLabel("Editar");

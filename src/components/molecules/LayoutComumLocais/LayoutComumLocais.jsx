@@ -5,10 +5,15 @@ import { useApiUsuario } from "../../../hooks/useApiUsuario";
 import PeopleIcon from '@mui/icons-material/People';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function LayoutComum({ titulo, showAuthButtons, showIcons, visivel }) {
-    const { locais, totalLocais } = useApiLocal();
+    const { locais, totalLocais, getLocais } = useApiLocal();
     const { totalOnline } = useApiUsuario();
+
+    useEffect(() => {
+        getLocais();
+    }, []);
 
     return (
         <Grid

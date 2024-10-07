@@ -31,6 +31,12 @@ function CadastroLocalForm() {
  const { id } = useParams();
  const [label, setLabel] = useState("Cadastrar");
 
+ const handleInput = (event, maxLength) => {
+  if (event.target.value.length > maxLength) {
+   event.target.value = event.target.value.slice(0, maxLength);
+  }
+ };
+
  const consultaCep = async () => {
   let cepConsulta = getValues("cep").replace(/\D/g, "");
   if (cepConsulta !== "") {
@@ -222,6 +228,7 @@ function CadastroLocalForm() {
        maxLength: { value: 8, message: "Máximo de 8 caracteres." }
       })}
       InputLabelProps={{ shrink: true }}
+      onInput={(event) => handleInput(event, 8)}
      />
      <TextField
       label="Logradouro"

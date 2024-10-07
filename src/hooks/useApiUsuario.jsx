@@ -84,16 +84,16 @@ export const useApiUsuario = () => {
             const token = data.Authorization;
 
             // Armazenando em cookies
-            setCookie("authToken", token, 7); // Cookie expira em 7 dias
-            setCookie("usuarioLogado", dadosUsuario.email, 7);
-            setCookie("usuarioId", data.usuarioId, 7);
+            setCookie("authToken", token, 1); 
+            setCookie("usuarioLogado", dadosUsuario.email, 1);
+            setCookie("usuarioId", data.usuarioId, 1);
 
             setTotalOnline(totalOnline + 1);
             console.log("Total online:", totalOnline);
             atualizarStatusUsuario(data.nome, data.usuarioId, true);
             console.log(totalOnline);
-
-            window.location.href = "/home";
+            
+            return true;
         } catch (error) {
             console.error("Erro ao fazer login:", error);
         }

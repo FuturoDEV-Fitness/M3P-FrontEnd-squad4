@@ -26,7 +26,8 @@ function CadastroLocalForm() {
   setValue,
   formState: { errors }
  } = useForm();
- const { atividadesDisponiveis } = useContext(LocalContext);
+ const { atividadesDisponiveis } = useContext(LocalContext)
+ const navigate = useNavigate();
  const { cadastrarLocal, editarLocal, getLocalPorId } = useApiLocal();
  const { id } = useParams();
  const [label, setLabel] = useState("Cadastrar");
@@ -85,10 +86,11 @@ function CadastroLocalForm() {
     usuario: getCookie("usuarioLogado"),
     atividades: atividades
    });
-   window.location.href = "/home";
+   
+   navigate("/home");
   }
 
-  window.location.href = "/home";
+  navigate("/home");
  }
 
  function carregarDadosEdicao(idSelecionado) {

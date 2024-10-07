@@ -8,15 +8,16 @@ const setCookie = (name, value, days, path = "/", domain, secure) => {
     document.cookie = `${name}=${encodeURIComponent(value || "")}${expires}; path=${path}${domain ? `; domain=${domain}` : ""}${secure ? "; secure" : ""}`;
 };
 
-const getCookie = (name) => {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+function getCookie(name) {
+    let cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].split('=');
+        if (cookie[0] === name) {
+            return cookie[1];
+        }
     }
     return null;
-};
+}
 
 const eraseCookie = (name, path = "/") => {
     document.cookie = `${name}=; Max-Age=-99999999; path=${path}`;

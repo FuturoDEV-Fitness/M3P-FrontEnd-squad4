@@ -11,10 +11,9 @@ import { getCookie } from "../hooks/useCookies";
 import InitialPage from "../pages/InitialPage/InitialPage";
 
 const isAuthenticated = getCookie("usuarioLogado") !== null;
-
-const PrivateRoute = ({ children }) => {
-    console.log('Autenticado???? ', isAuthenticated);
-    return isAuthenticated ? children : <Navigate to="/" />;
+const PrivateRoute = () => {
+    console.log("Autenticado: ", isAuthenticated)
+    return isAuthenticated ? <App/> : <Navigate to="/" />;
 };
 
 const routers = createBrowserRouter([
@@ -32,11 +31,7 @@ const routers = createBrowserRouter([
     },
     {
         path: "/",
-        element: (
-            <PrivateRoute>
-                <App />,
-            </PrivateRoute>
-        ),
+        element: <PrivateRoute />,
         errorElement: <ErroPage />,
         children: [
             {

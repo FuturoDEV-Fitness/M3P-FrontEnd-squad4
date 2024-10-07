@@ -27,8 +27,7 @@ function CadastroUsuarioForm() {
  const navigate = useNavigate();
 
  //Validação para quantidade de caracteres no Input de CPF
- const handleInput = (event) => {
-  const maxLength = 11;
+ const handleInput = (event, maxLength) => {
   if (event.target.value.length > maxLength) {
    event.target.value = event.target.value.slice(0, maxLength);
   }
@@ -48,7 +47,6 @@ function CadastroUsuarioForm() {
  const consultaCep = async () => {
   let cepConsulta = getValues("cep").replace(/\D/g, "");
   if (cepConsulta !== "") {
-   console.log(typeof cepConsulta.length);
    const dadosCep = await useBuscaCep(cepConsulta);
    setValue("logradouro", dadosCep.logradouro);
    setValue("municipio", dadosCep.localidade);
@@ -108,7 +106,7 @@ function CadastroUsuarioForm() {
           message: "Este campo aceita no máximo 11 caracteres."
          }
         })}
-        onInput={handleInput}
+        onInput={(event) => handleInput(event, 11)}
        />
 
        <TextField
@@ -188,6 +186,7 @@ function CadastroUsuarioForm() {
           message: "Este campo aceita no máximo 8 caracteres."
          }
         })}
+        onInput={(event) => handleInput(event, 8)}
        />
 
        <TextField

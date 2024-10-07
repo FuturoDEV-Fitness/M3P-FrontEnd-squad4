@@ -26,17 +26,25 @@ function CadastroUsuarioForm() {
 
   const navigate = useNavigate();
 
-  function sendCadastro(formValue) {
-    if (usuarios.find((usuario) => usuario.cpf === formValue.cpf)) {
-      alert("Usuario ja cadastrado");
-
-      return;
-    }
-
-    cadastrarUsuario({ ...formValue, cpf: formValue.cpf.replace(/\D/g, "") });
-    navigate("/");
+ //Validação para quantidade de caracteres no Input de CPF
+ const handleInput = (event) => {
+  const maxLength = 11;
+  if (event.target.value.length > maxLength) {
+   event.target.value = event.target.value.slice(0, maxLength);
   }
+ };
 
+ async function sendCadastro(formValue) {
+  const userRegister = await cadastrarUsuario({
+   ...formValue,
+   cpf: formValue.cpf.replace(/\D/g, "")
+  });
+
+  if (userRegister) {
+   navigate("/");
+  }
+ }
+  
   const consultaCep = async () => {
     let cepConsulta = getValues("cep").replace(/\D/g, "");
     if (cepConsulta !== "") {
@@ -63,7 +71,7 @@ function CadastroUsuarioForm() {
                 placeholder="Nome"
                 error={!!errors.nome}
                 helperText={errors.nome?.message}
-                sx={{ height: "1rem" }}
+                sx={{ height: "1rem", marginBottom: "35px" }}
                 {...register("nome", {
                   required: "Este campo é obrigatório.",
                   maxLength: {
@@ -77,10 +85,11 @@ function CadastroUsuarioForm() {
               <FormControl fullWidth>
                 <Select
                   defaultValue="Selecione"
+                  className="customSelect"
                   {...register("sexo", {
                     required: "Este campo é obrigatório."
                   })}>
-                  <MenuItem value="Selecione" disabled>
+                  <MenuItem value="Selecione" disabled className="customMenuItem">
                     <em>Selecione o Sexo</em>
                   </MenuItem>
                   <MenuItem value="Masculino">Masculino</MenuItem>
@@ -89,25 +98,26 @@ function CadastroUsuarioForm() {
               </FormControl>
 
               <TextField
-                placeholder="CPF"
-                variant="outlined"
-                error={!!errors.cpf}
-                helperText={errors.cpf?.message}
-                {...register("cpf", {
-                  required: "Este campo é obrigatório.",
-                  maxLength: {
-                    value: 11,
-                    message: "Este campo aceita no máximo 11 caracteres."
-                  }
-                })}
-              />
-
+        placeholder="CPF"
+        variant="outlined"
+        error={!!errors.cpf}
+        helperText={errors.cpf?.message}
+        {...register("cpf", {
+         required: "Este campo é obrigatório.",
+         maxLength: {
+          value: 11,
+          message: "Este campo aceita no máximo 11 caracteres."
+         }
+        })}
+        onInput={handleInput}
+       />
               <TextField
                 placeholder="Data de Nascimento"
                 type="date"
                 variant="outlined"
                 error={!!errors.dataNascimento}
                 helperText={errors.dataNascimento?.message}
+                className="customDate"
                 {...register("dataNascimento", {
                   required: "Este campo é obrigatório.",
                   maxLength: {
@@ -251,23 +261,42 @@ function CadastroUsuarioForm() {
                 })}
               />
             </Grid>
-          </form>
-          <Grid
-            className="containerButtonCadastroUsuario"
-            sx={{ flexDirection: "column" }}>
-            <Button
-              onClick={handleSubmit(sendCadastro)}
-              className="buttonCadastrar"
-              variant="contained"
-              size="medium">
-              Cadastrar
-            </Button>
-            <Link to="/">
-              <Button className="buttonVoltar" variant="contained" size="medium">
-                Já Possui Cadastro?
+            <Grid
+              className="containerButtonCadastroUsuario"
+              sx={{ flexDirection: "column" }}>
+              <Button
+                onClick={handleSubmit(sendCadastro)}
+                className="buttonCadastrar"
+                variant="contained"
+                size="medium"
+                sx={{
+                  fontSize: {
+                    xs: '0.8rem',
+                    sm: '1rem',
+                    md: '1.2rem',
+                    lg: '1.5rem',
+                    xl: '1.7rem'
+                  }
+                }}>
+                Cadastrar
               </Button>
-            </Link>
-          </Grid>
+              <Link to="/login">
+                <Button className="buttonVoltar" variant="contained" size="medium"
+                  sx={{
+                    fontSize: {
+                      xs: '0.8rem',
+                      sm: '1rem',
+                      md: '1.2rem',
+                      lg: '1.5rem',
+                      xl: '1.7rem'
+                    }
+                  }}>
+                  Já Possui Cadastro?
+                </Button>
+              </Link>
+            </Grid>
+          </form>
+
         </Grid>
       </Grid>
     </>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { setCookie, eraseCookie, getCookie } from "./useCookies.js";
+import { isTokenValid } from "./useValidaToken.js";
 
 export const useApiUsuario = () => {
     const [usuarios, setUsuarios] = useState([]);
@@ -6,9 +8,14 @@ export const useApiUsuario = () => {
     const [error, setError] = useState(null);
     const [totalOnline, setTotalOnline] = useState(0);
 
-
     useEffect(() => {
-        getUsuarios();
+        getContadorUsuariosLogados();
+        const token = getCookie("authToken");
+        if (token && isTokenValid(token)) {
+            getUsuarios();
+        } else {
+            logout();
+        }
     }, []);
 
     const getUsuarios = async () => {
@@ -26,12 +33,34 @@ export const useApiUsuario = () => {
             console.log(data);
             setUsuarios(data);
             setTotalOnline(data.filter((usuario) => usuario.isOnline).length);
-            console.log("Total online:", data.filter((usuario) => usuario.isOnline).length);
+            console.log(
+                "Total online:",
+                data.filter((usuario) => usuario.isOnline).length
+            );
         } catch (error) {
             console.error("Erro ao buscar usuários:", error);
             setError(error.message || "Erro desconhecido");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const getContadorUsuariosLogados = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.mensagem);
+                return;
+            }
+            const data = await response.json();
+
+            setTotalOnline(data.filter((usuario) => usuario.isOnline).length);
+            console.log("Total online:", totalOnline);
+
+        } catch (error) {
+            console.error("Erro ao buscar contadores:", error);
         }
     };
 
@@ -54,20 +83,21 @@ export const useApiUsuario = () => {
             const data = await response.json();
             const token = data.Authorization;
 
-            localStorage.setItem("authToken", token);
-            localStorage.setItem("usuarioLogado", dadosUsuario.email);
+            // Armazenando em cookies
+            setCookie("authToken", token, 7); // Cookie expira em 7 dias
+            setCookie("usuarioLogado", dadosUsuario.email, 7);
+            setCookie("usuarioId", data.usuarioId, 7);
 
             setTotalOnline(totalOnline + 1);
             console.log("Total online:", totalOnline);
             atualizarStatusUsuario(data.nome, data.usuarioId, true);
             console.log(totalOnline);
 
-            window.location.href = "/dashboard";
+            window.location.href = "/home";
         } catch (error) {
             console.error("Erro ao fazer login:", error);
         }
     };
-
 
     const cadastrarUsuario = async (dadosUsuario) => {
         const usuarioAdicionar = {
@@ -97,8 +127,12 @@ export const useApiUsuario = () => {
 
             alert("Usuário cadastrado com sucesso!");
             getUsuarios();
+            return true;
         } catch (error) {
-            console.error("Erro ao cadastrar usuário:", error.message || "Erro desconhecido");
+            console.error(
+                "Erro ao cadastrar usuário:",
+                error.message || "Erro desconhecido"
+            );
             alert("Erro ao cadastrar usuário!");
         }
     };
@@ -127,28 +161,45 @@ export const useApiUsuario = () => {
             console.log("Usuário atualizado com sucesso!");
             getUsuarios();
         } catch (error) {
-            console.error("Erro ao atualizar usuário:", error.message || "Erro desconhecido");
+            console.error(
+                "Erro ao atualizar usuário:",
+                error.message || "Erro desconhecido"
+            );
         }
     };
 
     const logout = async (emailUsuarioLogado) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
+            if (emailUsuarioLogado) {
+                const response = await fetch(`${import.meta.env.VITE_URL_API}/usuarios`);
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.mensagem);
-                return;
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(errorData.mensagem);
+                    return;
+                }
+
+                const dados = await response.json();
+
+                for (const usuario of dados) {
+                    if (usuario.email === emailUsuarioLogado) {
+                        await atualizarStatusUsuario(usuario, usuario.id, false);
+                        setTotalOnline((totalOnline) => totalOnline - 1);
+                        eraseCookie("authToken");
+                        eraseCookie("usuarioLogado");
+                        eraseCookie("usuarioId");
+                        break;
+                    }
+                }
+            } else {
+                eraseCookie("authToken");
+                eraseCookie("usuarioLogado");
             }
 
-            const dados = await response.json();
-
-            dados.forEach((usuario) => {
-                if (usuario.email === emailUsuarioLogado) {
-                    atualizarStatusUsuario(usuario, usuario.id, false);
-                    setTotalOnline((totalOnline) => totalOnline - 1);
-                }
-            });
+            const pathsToExclude = ["/", "/cadastroUsuario", "/login"];
+            if (!pathsToExclude.includes(window.location.pathname)) {
+                window.location.href = "/";
+            }
         } catch (error) {
             console.error("Erro ao fazer logout:", error.message || "Erro desconhecido");
         }
@@ -165,5 +216,4 @@ export const useApiUsuario = () => {
         atualizarStatusUsuario,
         login
     };
-
-}
+};

@@ -1,4 +1,4 @@
-.containerCard {
+/* .containerCard {
  display: flex;
  justify-content: center;
  align-items: center;
@@ -90,6 +90,7 @@
   align-items: center;
   flex-direction: column;
  }
+
 }
 
 @media (max-width: 1024px) {
@@ -118,4 +119,4 @@
   display: flex;
   justify-content: center;
  }
-}
+} */

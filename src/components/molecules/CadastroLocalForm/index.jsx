@@ -1,7 +1,6 @@
 /* eslint-disable */
 import {
     TextField,
-    Grid,
     Button,
     FormLabel,
     FormControl,
@@ -96,7 +95,14 @@ function CadastroLocalForm() {
             setValue("uf", response.uf);
             setValue("latitude", response.latitude);
             setValue("longitude", response.longitude);
-            setAtividades(response.atividades);
+
+            const novasAtividades = { ...atividades };
+
+            response.atividades.forEach((atividade) => {
+                novasAtividades[atividade.nomeAtividade] = true;
+            });
+
+            setAtividades(novasAtividades);
         });
     }
 
@@ -257,18 +263,21 @@ function CadastroLocalForm() {
                     <FormLabel component="legend">Atividades Esportivas</FormLabel>
                     <FormGroup sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                         {atividadesDisponiveis.map((atividade, index) => (
-                            <FormControlLabel
-                                key={index}
-                                control={
-                                    <Checkbox
-                                        checked={atividades[atividade.nomeAtividade] || false}
-                                        onChange={getAtividadesSelecionadas}
-                                        name={atividade.nomeAtividade}
-                                    />
-                                }
-                                label={atividade.nomeAtividade.charAt(0).toUpperCase() + atividade.nomeAtividade.slice(1)}
-                                sx={{ flex: "1 0 45%" }}
-                            />
+                            <div className="atividade-item" key={index}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={atividades[atividade.nomeAtividade] || false}
+                                            onChange={getAtividadesSelecionadas}
+                                            name={atividade.nomeAtividade}
+                                        />
+                                    }
+                                    label={
+                                        atividade.nomeAtividade.charAt(0).toUpperCase() + 
+                                        atividade.nomeAtividade.slice(1)}
+                                        sx={{ flex: "1 0 45%" }}
+                                />
+                            </div>
                         ))}
                     </FormGroup>
                 </FormControl>

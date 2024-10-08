@@ -11,7 +11,6 @@ import { getCookie } from "../hooks/useCookies";
 import InitialPage from "../pages/InitialPage/InitialPage";
 
 const isAuthenticated = getCookie("usuarioLogado") !== null;
-
 const PrivateRoute = () => {
     console.log("Autenticado: ", isAuthenticated)
     return isAuthenticated ? <App/> : <Navigate to="/" />;

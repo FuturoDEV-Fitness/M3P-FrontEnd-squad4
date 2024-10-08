@@ -182,6 +182,7 @@ export const useApiLocal = () => {
   totalLocais,
   loading,
   error,
+  getLocais,
   cadastrarLocal,
   editarLocal,
   getLocalPorId,

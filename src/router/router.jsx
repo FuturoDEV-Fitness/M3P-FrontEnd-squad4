@@ -11,51 +11,56 @@ import { getCookie } from "../hooks/useCookies";
 import InitialPage from "../pages/InitialPage/InitialPage";
 
 const isAuthenticated = getCookie("usuarioLogado") !== null;
-
-const PrivateRoute = ({ children }) => {
- return isAuthenticated ? children : <Navigate to="/" />;
+const PrivateRoute = () => {
+    console.log("Autenticado: ", isAuthenticated)
+    return isAuthenticated ? <App/> : <Navigate to="/" />;
 };
 
 const routers = createBrowserRouter([
- {
-  path: "/",
-  element: <DashboardPage />
- },
- {
-  path: "/login",
-  element: <LoginPage />
- },
- {
-  path: "/cadastroUsuario",
-  element: <CadastroUsuarioPage />
- },
- {
-  path: "/",
-  element: (
-   <PrivateRoute>
-    <App />
-   </PrivateRoute>
-  ),
-  errorElement: <ErroPage />,
-  children: [
-   {
-    path: "/home",
-    element: <InitialPage />
-   },
-   {
-    path: "/cadastroLocal",
-    element: <CadastroLocalPage />
-   },
-   {
-    path: "/cadastroLocal/:id",
-    element: <CadastroLocalPage />
-   },
-   {
-    path: "/listaLocal",
-    element: <ListaLocalPage />
-   }
-  ]
- }
+    {
+        path: "/",
+        element: <DashboardPage />
+    },
+    {
+        path: "/login",
+        element: <LoginPage />
+    },
+    {
+        path: "/cadastroUsuario",
+        element: <CadastroUsuarioPage />
+    },
+    {
+        path: "/",
+        element: <PrivateRoute />,
+        errorElement: <ErroPage />,
+        children: [
+            {
+                path: "/home",
+                element:
+                    <InitialPage />
+
+            },
+            {
+                path: "/cadastroLocal",
+                element:
+                    <CadastroLocalPage />
+
+
+            },
+            {
+                path: "/cadastroLocal/:id",
+                element:
+                    <CadastroLocalPage />
+
+            },
+            {
+                path: "/listaLocal",
+                element:
+                    <ListaLocalPage />
+
+            }
+        ]
+    }
 ]);
 
 export default routers;

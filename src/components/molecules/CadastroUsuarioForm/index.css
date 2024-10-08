@@ -209,3 +209,16 @@
         border-color: #f44336;
     }
 }
+
+@media (min-width: 1000px) {
+    .buttonVoltar {
+        width: 250px;
+    }
+}
+
+@media (min-width: 1140px) {
+    .buttonVoltar {
+        width: 280px;
+
+    }
+}
